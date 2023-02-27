@@ -54,6 +54,6 @@ def handle_message(message):
 
 if __name__=="__main__":
     #app.run(debug=True)
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, host="mytwitch.herokuapp.com")
 # Instead of Python reading from file, JavaScript reads from file and sends random message (POST request) to Python backend
 
