@@ -51,7 +51,5 @@ def handle_message(message):
         #available_chats_dict.remove(streamer)
 
 if __name__=="__main__":
-    #app.run(debug=True)
-    socketio.run(app, host="mytwitch.onrender.com")
-# Instead of Python reading from file, JavaScript reads from file and sends random message (POST request) to Python backend
-
+    #socketio.run(app, debug=True, host="mytwitch.onrender.com")
+    socketio.run(app, debug=True, host="mytwitch.onrender.com")

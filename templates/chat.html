@@ -10,19 +10,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
     <script type="text/javascript">
         var homeLink="https://mytwitch.onrender.com/"//{{streamer}}"
+        //var homeLink="10.123.125.13:5000"
 
         $(document).ready(function(){
             var socket = io.connect(homeLink)
             socket.on('connect', function(){
+                console.log("CONNECTEDDDDDD")
                 socket.send("USER CONNECTED")
             });
 
             socket.on('message', function(data){
+                console.log("NEW MESSAGE: "+data)
                 $('#messages').append($('<p>').text(data))
             });
 
             $('#send-button').on('click', function(){
-                console.log("NEW MSG")
                 socket.send($('#message').val())
                 $('#message').val('')
             });
