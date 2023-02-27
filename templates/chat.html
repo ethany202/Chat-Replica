@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <title>{{streamer}}'s Chat</title>  
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+    <script type="text/javascript">
+        var homeLink="https://mytwitch.herokuapp.com"//{{streamer}}"
+
+        $(document).ready(function(){
+            var socket = io.connect(homeLink)
+            socket.on('connect', function(){
+                socket.send("USER CONNECTED")
+            });
+
+            socket.on('message', function(data){
+                $('#messages').append($('<p>').text(data))
+            });
+
+            $('#send-button').on('click', function(){
+                console.log("BITCH")
+                socket.send($('#message').val())
+                $('#message').val('')
+            });
+        })
+
+
+    </script>
+
+    <style>
+        #messages{
+            overflow:hidden;
+            overflow-y: scroll;
+            height: 20vw;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat">
+        <input type="text" id="message" name="message" placeholder="Type something...">
+        <button id="send-button"> Send </button>
+    </div>
+
+    <div id="messages">
+        
+    </div>
+</body>
+</html>
