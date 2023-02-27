@@ -52,5 +52,5 @@ def handle_message(message):
         #available_chats_dict.remove(streamer)
 
 if __name__=="__main__":
-    #socketio.run(app, debug=True, host="mytwitch.onrender.com")
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, host="mytwitch.onrender.com")
+    #socketio.run(app, debug=True)
