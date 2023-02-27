@@ -9,26 +9,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
     <script type="text/javascript">
-        var homeLink="https://mytwitch.onrender.com/chat"//{{streamer}}"
-        //var homeLink="10.123.125.13:5000"
+        // var homeLink="https://mytwitch.onrender.com/chat"//{{streamer}}"
+        // //var homeLink="10.123.125.13:5000"
 
-        $(document).ready(function(){
-            var socket = io.connect(homeLink)
-            socket.on('connect', function(){
-                console.log("CONNECTEDDDDDD")
-                socket.send("USER CONNECTED")
-            });
+        // $(document).ready(function(){
+        //     var socket = io.connect(homeLink)
+        //     socket.on('connect', function(){
+        //         console.log("CONNECTEDDDDDD")
+        //         socket.send("USER CONNECTED")
+        //     });
 
-            socket.on('message', function(data){
-                console.log("NEW MESSAGE: "+data)
-                $('#messages').append($('<p>').text(data))
-            });
+        //     socket.on('message', function(data){
+        //         console.log("NEW MESSAGE: "+data)
+        //         $('#messages').append($('<p>').text(data))
+        //     });
 
-            $('#send-button').on('click', function(){
-                socket.send($('#message').val())
-                $('#message').val('')
-            });
-        })
+        //     $('#send-button').on('click', function(){
+        //         socket.send($('#message').val())
+        //         $('#message').val('')
+        //     });
+        // })
 
 
     </script>
