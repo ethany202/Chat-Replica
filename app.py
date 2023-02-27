@@ -8,7 +8,7 @@ socketio = SocketIO(app, logger=True,
 
 # available_chats_dict={"yanchovies"}
 
-@app.route("/", methods=["POST", "GET"])
+@app.route("/chat", methods=["POST", "GET"])
 def home_page():
     if request.method=='GET':
         #return render_template("home.html")
