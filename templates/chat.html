@@ -29,7 +29,15 @@
         //         $('#message').val('')
         //     });
         // })
+        var socket = io()
+        function sendMessage () {
+            console.log(document.getElementById("message").value)
+            socket.emit(message, document.getElementById("message").value)
+        }
 
+        socket.on("new_message", (data) => {
+            document.getElementById("chat").innerHTML += "<br>" + data
+        })
 
     </script>
 
@@ -44,7 +52,7 @@
 <body>
     <div id="chat">
         <input type="text" id="message" name="message" placeholder="Type something...">
-        <button id="send-button"> Send </button>
+        <button onclick="sendMessage()" id="send-button"> Send </button>
     </div>
 
     <div id="messages">

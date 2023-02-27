@@ -1,5 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request, session
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, emit, send
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "chat"
@@ -44,7 +44,8 @@ def home_page():
 def handle_message(message):
     print(message)
     if message != "USER CONNECTED":
-        send(message, broadcast=True)
+        #send(message, broadcast=True)
+        emit("new_message", message, broadcast=True)
     #if message == "!end":
      #   print("ENDING STREAM")
         #session.pop(streamer)
