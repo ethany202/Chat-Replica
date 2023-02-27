@@ -32,7 +32,7 @@
         var socket = io()
         function sendMessage () {
             console.log(document.getElementById("message").value)
-            socket.emit(message, document.getElementById("message").value)
+            socket.emit("message", document.getElementById("message").value)
         }
 
         socket.on("new_message", (data) => {
