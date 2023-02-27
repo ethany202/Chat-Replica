@@ -43,9 +43,9 @@ def home_page():
 @socketio.on('message')
 def handle_message(message):
     print(message)
-    if message != "USER CONNECTED":
+    emit("new_message", message, broadcast=True)
         #send(message, broadcast=True)
-        emit("new_message", message, broadcast=True)
+        
     #if message == "!end":
      #   print("ENDING STREAM")
         #session.pop(streamer)
@@ -53,4 +53,4 @@ def handle_message(message):
 
 if __name__=="__main__":
     #socketio.run(app, debug=True, host="mytwitch.onrender.com")
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, host="mytwitch.onrender.com")
