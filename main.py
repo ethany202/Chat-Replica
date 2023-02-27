@@ -5,7 +5,8 @@ from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "chat"
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, logger=True,
+    engineio_logger=True, cors_allowed_origins="*")
 
 available_chats_dict={"yanchovies"}
 
@@ -53,6 +54,6 @@ def handle_message(message):
 
 if __name__=="__main__":
     #app.run(debug=True)
-    socketio.run(app)
+    socketio.run(app, debug=True)
 # Instead of Python reading from file, JavaScript reads from file and sends random message (POST request) to Python backend
 
