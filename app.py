@@ -1,6 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session, g
-from datetime import timedelta
-import retrieve_data as rd
+from flask import Flask, redirect, url_for, render_template, request, session
 from flask_socketio import SocketIO, send
 
 app = Flask(__name__)
