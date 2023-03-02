@@ -72,6 +72,8 @@ def handle_random_message(user, streamer):
 def user_disconnected(streamer):
     global active_chats
     active_chats[streamer] -= 1
+    if active_chats[streamer] < 0:
+        active_chats[streamer]=0
 
 
 @socketio.on('add_user')
