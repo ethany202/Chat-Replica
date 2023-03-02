@@ -9,34 +9,58 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
     <script type="text/javascript">
-        // var homeLink="https://mytwitch.onrender.com/chat"//{{streamer}}"
-        // //var homeLink="10.123.125.13:5000"
 
-        // $(document).ready(function(){
-        //     var socket = io.connect(homeLink)
-        //     socket.on('connect', function(){
-        //         console.log("CONNECTEDDDDDD")
-        //         socket.send("USER CONNECTED")
-        //     });
-
-        //     socket.on('message', function(data){
-        //         console.log("NEW MESSAGE: "+data)
-        //         $('#messages').append($('<p>').text(data))
-        //     });
-
-        //     $('#send-button').on('click', function(){
-        //         socket.send($('#message').val())
-        //         $('#message').val('')
-        //     });
-        // })
         var socket = io()
+        var streamer = window.location.pathname.substring(1)
+        var connectedUsers = 0
+        
+        const maxToStart = 2
+
         function sendMessage () {
-            console.log(document.getElementById("message").value)
-            socket.emit("message", document.getElementById("message").value)
+            let userMessage = document.getElementById("message").value
+            console.log(userMessage)
+
+            socket.emit("message", "Exia: "+userMessage, streamer)
+            document.getElementById("message").value=""
         }
 
         socket.on("new_message", (data) => {
             document.getElementById("messages").innerHTML += "<br>" + data
+        })
+
+        socket.on("random_message", (data) => {
+            document.getElementById("messages").innerHTML += "<br>"+data
+            
+            if(connectedUsers <= maxToStart){
+                let randomTime = getRandomInt(50, 500)
+                setTimeout(sendRandomMessage, randomTime)
+            }
+        })
+
+        function sendRandomMessage (){
+            socket.emit("random_message", "Yanchovies", streamer)
+            //setTimeout(sendRandomMessage, 100);
+        }
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        socket.on('disconnect', function(){
+            socket.emit("delete_user", streamer)
+        })
+
+        socket.on('connect', function(){
+            socket.emit("add_user", streamer)
+        })
+
+        socket.on('set_connected_users', function(data){
+            console.log("CONNECTED TO: "+data)
+            if(data[0] === streamer){
+                connectedUsers = data[1]
+            }
         })
 
     </script>
@@ -45,18 +69,26 @@
         #messages{
             overflow:hidden;
             overflow-y: scroll;
-            height: 20vw;
+            height: 50vw;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 10%
+        }
+
+        #chat{
+            text-align: center;
         }
     </style>
 </head>
-<body>
-    <div id="chat">
-        <input type="text" id="message" name="message" placeholder="Type something...">
-        <button onclick="sendMessage()" id="send-button"> Send </button>
-    </div>
+<body>   
 
     <div id="messages">
         
+    </div>
+
+    <div id="chat">
+        <input type="text" id="message" name="message" placeholder="Type something...">
+        <button onclick="sendMessage()" id="send-button"> Send </button>
     </div>
 </body>
 </html>
