@@ -32,14 +32,16 @@
         socket.on("random_message", (data) => {
             document.getElementById("messages").innerHTML += "<br>"+data
             
-            if(connectedUsers <= maxToStart){
-                let randomTime = getRandomInt(50, 500)
-                setTimeout(sendRandomMessage, randomTime)
-            }
+            // if(connectedUsers <= maxToStart){
+            //     let randomTime = getRandomInt(50, 500)
+            //     setTimeout(sendRandomMessage, randomTime)
+            // }
+            let randomTime = getRandomInt(50, 500)
+            setTimeout(sendRandomMessage, randomTime)
         })
 
         function sendRandomMessage (){
-            socket.emit("random_message", "Yanchovies", streamer)
+            socket.emit("random_message", streamer)
             //setTimeout(sendRandomMessage, 100);
         }
 

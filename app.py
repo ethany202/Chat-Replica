@@ -59,9 +59,8 @@ def handle_message(message, streamer):
 
 
 @socketio.on('random_message')
-def handle_random_message(user, streamer):
+def handle_random_message(streamer):
     if active_chats[streamer] > 0:
-
         random_message = read_random_message()
         random_user = read_random_user()
         print(random_message)
