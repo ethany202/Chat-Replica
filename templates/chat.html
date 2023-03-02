@@ -20,7 +20,7 @@
             let userMessage = document.getElementById("message").value
             console.log(userMessage)
 
-            socket.emit("add_user", streamer)
+            //socket.emit("add_user", streamer)
             socket.emit("message", "Exia: "+userMessage, streamer)
             document.getElementById("message").value=""
         }
@@ -53,9 +53,9 @@
             socket.emit("delete_user", streamer)
         })
 
-        // socket.on('connect', function(){
-        //     socket.emit("add_user", streamer)
-        // })
+        socket.on('connect', function(){
+            socket.emit("add_user", streamer)
+        })
 
         socket.on('set_connected_users', function(data){
             console.log("CONNECTED TO: "+data)
