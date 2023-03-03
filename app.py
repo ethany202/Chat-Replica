@@ -1,10 +1,12 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, g
 from flask_socketio import SocketIO, emit
+from datetime import timedelta
 import retrieve_data as rd
 import random
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "chat"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
 socketio = SocketIO(app, logger=True,
     engineio_logger=True, cors_allowed_origins="*")
 
@@ -12,6 +14,7 @@ random_users = []
 lines = []
 active_chats = {"Yanchovies":0}
 
+# General Functions
 def read_random_user():
     global random_users
     file="RandomUser.txt"
@@ -26,30 +29,80 @@ def read_random_message():
         lines = open(file).read().splitlines()
     return random.choice(lines)
 
+
+# Path handlers
 @app.route("/", methods=["POST", "GET"])
 def home_page():
     if request.method=='GET':
         return render_template("home.html")
     else:
-        username = request.form.get("username")
+        streamer = request.form.get("username")
 
         conn = rd.connect()
-        users = rd.check_records(username, conn)
+        users = rd.check_records(streamer, conn)
 
+        rd.close_connection(conn)
         if len(users)>=1:
-            rd.close_connection(conn)
-            return redirect(url_for('direct_to_stream', streamer=username))
+            
+            return redirect(url_for('direct_to_stream', streamer=streamer))
         else:     
-            rd.add_user(username, "Password", conn)   
-            rd.close_connection(conn)
             return render_template("home.html")
     
 
 @app.route("/<streamer>", methods=["POST", "GET"])
 def direct_to_stream(streamer):
-    return render_template("chat.html", streamer=streamer)            
+    if "user" in session:
+        return render_template("chat.html", streamer=streamer)          
+    return redirect(url_for('login'))  
 
 
+@app.route("/login", methods=['POST', 'GET'])
+def login():
+    if request.method=="GET":
+        return render_template('login.html')
+    else:
+        username=request.form.get("username")
+        password = request.form.get("password")
+        conn = rd.connect()
+
+        users = rd.verify_credentials(username, password, conn)
+        rd.close_connection()
+
+        if len(users) == 0:
+            return render_template('login.html')
+        else:
+            session['user'] = username
+            session.permanent=True
+            return redirect(url_for("home_page"))
+
+
+@app.route("/register", methods=['POST', 'GET'])
+def register():
+    if request.method=='GET':
+        return render_template('register.html')
+    else:
+        username=request.form.get('username')
+        password=request.form.get('password')
+        password_confirm = request.form.get('password_confirm')
+
+        if password != password_confirm:
+            return render_template('register.html', warning="Please enter the same password twice")
+        else:
+            conn = rd.connect()
+            existing_users = rd.check_records(username, conn)
+            
+            rd.close_connection()
+            if len(existing_users)>0:
+                return render_template('register.html', warning="This username already exists. Please select another one.")
+            else:
+                rd.add_user(username, password, conn)
+                return redirect(url_for("home_page"))
+
+@app.route("/logout", methods=['POST'])
+def logout():
+    session.pop('user', None)
+
+# Socket message handlers
 @socketio.on('message')
 def handle_message(message, streamer):
     global active_chats
@@ -87,5 +140,6 @@ def user_connected(streamer):
 
 
 if __name__=="__main__":
-    socketio.run(app, debug=True, host="mytwitch.onrender.com")
+    #socketio.run(app, debug=True, host="mytwitch.onrender.com")
     #socketio.run(app, debug=True, host="192.168.1.166")
+    socketio.run(app, debug=True, host="172.29.160.1")
