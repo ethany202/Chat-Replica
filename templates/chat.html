@@ -21,7 +21,7 @@
             console.log(userMessage)
 
             //socket.emit("add_user", streamer)
-            socket.emit("message", "Exia: "+userMessage, streamer)
+            socket.emit("message", userMessage, streamer)
             document.getElementById("message").value=""
         }
 

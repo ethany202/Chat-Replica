@@ -34,7 +34,10 @@ def read_random_message():
 @app.route("/", methods=["POST", "GET"])
 def home_page():
     if request.method=='GET':
-        return render_template("home.html")
+        if "user" in session:
+            return render_template("home.html", current_user=session['user'])
+        else:
+            return render_template("home.html", current_user="")
     else:
         streamer = request.form.get("username")
 
@@ -42,11 +45,13 @@ def home_page():
         users = rd.check_records(streamer, conn)
 
         rd.close_connection(conn)
-        if len(users)>=1:
-            
+        if len(users)>=1:         
             return redirect(url_for('direct_to_stream', streamer=streamer))
         else:     
-            return render_template("home.html")
+            if "user" in session:
+                return render_template("home.html", current_user=session['user'])
+            else:
+                return render_template("home.html", current_user="")
     
 
 @app.route("/<streamer>", methods=["POST", "GET"])
@@ -66,14 +71,14 @@ def login():
         conn = rd.connect()
 
         users = rd.verify_credentials(username, password, conn)
-        rd.close_connection()
+        rd.close_connection(conn)
 
         if len(users) == 0:
             return render_template('login.html')
         else:
             session['user'] = username
             session.permanent=True
-            return redirect(url_for("home_page"))
+            return redirect(url_for("home_page", current_user=username))
 
 
 @app.route("/register", methods=['POST', 'GET'])
@@ -83,20 +88,23 @@ def register():
     else:
         username=request.form.get('username')
         password=request.form.get('password')
-        password_confirm = request.form.get('password_confirm')
+        password_confirm = request.form.get('password-retype')
 
         if password != password_confirm:
             return render_template('register.html', warning="Please enter the same password twice")
         else:
             conn = rd.connect()
             existing_users = rd.check_records(username, conn)
-            
-            rd.close_connection()
+            print(existing_users)
             if len(existing_users)>0:
+                rd.close_connection(conn)
                 return render_template('register.html', warning="This username already exists. Please select another one.")
             else:
                 rd.add_user(username, password, conn)
-                return redirect(url_for("home_page"))
+                rd.close_connection(conn)
+
+                session['user'] = username
+                return redirect(url_for("home_page", current_user=username))
 
 @app.route("/logout", methods=['POST'])
 def logout():
@@ -107,7 +115,7 @@ def logout():
 def handle_message(message, streamer):
     global active_chats
     print(message)
-    emit("new_message", message, broadcast=True)
+    emit("new_message", session['user'] + ": "+message, broadcast=True)
     emit("random_message", "Yanchovies: LMAO", broadcast=True)
 
 
@@ -140,6 +148,5 @@ def user_connected(streamer):
 
 
 if __name__=="__main__":
-    #socketio.run(app, debug=True, host="mytwitch.onrender.com")
-    #socketio.run(app, debug=True, host="192.168.1.166")
-    socketio.run(app, debug=True, host="172.29.160.1")
+    socketio.run(app, debug=True, host="mytwitch.onrender.com")
+    #socketio.run(app, debug=True, host="172.27.176.1")

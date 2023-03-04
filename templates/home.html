@@ -15,6 +15,10 @@
         #find-chat{
             text-align: center;
         }
+
+        #current-user{
+            text-align: right;
+        }
     </style>
     
 </head>
@@ -22,6 +26,9 @@
     <div id="nav-bar">
         <button class="nav-bar-button" onclick="redirectToPage('login')">Login</button>
         <button class="nav-bar-button" onclick="redirectToPage('register')">Register</button>
+    </div>
+    <div id="current-user">
+        {{current_user}}
     </div>
 
     <div id="find-chat">
