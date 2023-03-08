@@ -149,4 +149,4 @@ def user_connected(streamer):
 
 if __name__=="__main__":
     socketio.run(app, debug=True, host="mytwitch.onrender.com")
-    #socketio.run(app, debug=True, host="172.27.176.1")
+    #socketio.run(app, debug=True, host="192.168.1.157")
