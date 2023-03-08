@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300&display=swap" rel="stylesheet">
     <title>My Twitch</title>
     <script type="text/javascript">
         function redirectToPage(path){
@@ -12,8 +15,62 @@
     </script>
     
     <style>
+        #navigation-bar{
+            margin: 1vw;
+        }
+
+        .nav-button{
+            padding: 1vw;
+            margin: 0.5vw;
+            font-size: 1vw;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.1vw;
+            transition: all .2s ease-in-out;
+            color: black;
+            border: none;
+            text-decoration: none;
+        }
+
+        .nav-button:hover{
+            color:rgba(168, 21, 21, 0.911);
+            cursor: pointer;
+
+            font-size: 1.25vw;
+            font-weight: bold;
+        }
+
+
+
         #find-chat{
-            text-align: center;
+            text-align: center;          
+        }
+
+        input{
+            padding: 0.5vw;
+            margin: 2.5vw 0vw 2.5vw 1vw; 
+           
+            font-size: 1vw;
+            font-family: 'Poppins', sans-serif;
+
+            border-radius: 0.35vw;
+            border: 0.1vw solid black;
+        }
+
+        #submit-button{
+            padding: 0.5vw;
+
+            font-size: 1vw;
+            font-family: 'Poppins', sans-serif;
+
+            border-radius: 0.35vw;
+            border: 0.1vw solid black;
+
+            background-color: black;
+            color: white;
+        }
+
+        #submit-button:hover{
+            cursor: pointer;
         }
 
         #current-user{
@@ -23,18 +80,20 @@
     
 </head>
 <body>
-    <div id="nav-bar">
-        <button class="nav-bar-button" onclick="redirectToPage('login')">Login</button>
-        <button class="nav-bar-button" onclick="redirectToPage('register')">Register</button>
-    </div>
-    <div id="current-user">
-        {{current_user}}
+    <div id="navigation-bar">
+        <header>
+            <nav id="navbar">
+                <a href="login" class = "nav-button">Login</a>
+                <a href="register" class="nav-button">Register</a>
+                <div id="current-user">{{current_user}}</div>
+            </nav>  
+        </header>
     </div>
 
     <div id="find-chat">
         <form id = "input-form" method="POST">
             <input type="text" id="username" class = "input-field" name="username" placeholder="Streamer">
-            <button class="submit-button"> Join Chat </button>
+            <button id="submit-button">Join</button>
         </form>
     </div>
 </body>
