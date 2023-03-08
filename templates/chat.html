@@ -29,11 +29,17 @@
         }
 
         socket.on("new_message", (data) => {
-            document.getElementById("messages").innerHTML += "<br>" + data
+            sender = data[0]
+            message = data[1]
+
+            document.getElementById("messages").innerHTML += "<br>" + sender+": "+message
         })
 
         socket.on("random_message", (data) => {
-            document.getElementById("messages").innerHTML += "<br>"+data
+            sender=data[0]
+            message=data[1]
+
+            document.getElementById("messages").innerHTML += "<br>"+sender+": "+message
             
             // if(connectedUsers <= maxToStart){
             //     let randomTime = getRandomInt(50, 500)
@@ -72,13 +78,27 @@
     </script>
 
     <style>
+        body{
+            background-color: #121212;
+        }
+
         #messages{
-            overflow:hidden;
+            overflow: hidden;
             overflow-y: scroll;
-            height: 50vw;
+
+            height: 25vw;
             display: flex;
             flex-direction: column-reverse;
-            padding: 10%
+            padding: 10%;
+
+            font-family: 'Poppins', sans-serif;
+            color: white;
+
+            letter-spacing: 0.05vw;
+        }
+
+        #messages::-webkit-scrollbar {
+            display: none; /* for Chrome, Safari, and Opera */
         }
 
         #chat{
@@ -91,9 +111,19 @@
            
             font-size: 1vw;
             font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            letter-spacing: 0.05vw;
 
-            border-radius: 0.35vw;
-            border: 0.1vw solid black;
+            border: 0.05vw;
+            border-bottom: 0.15vw solid;
+            border-color: grey;
+
+            color: white;
+            background-color: #121212;
+        }
+
+        input:focus{
+            outline:none;
         }
 
         #send-button{
@@ -101,11 +131,12 @@
 
             font-size: 1vw;
             font-family: 'Poppins', sans-serif;
+            font-weight: bold;
 
             border-radius: 0.35vw;
-            border: 0.1vw solid black;
+            border: 0.1vw solid #6441a5;
 
-            background-color: black;
+            background-color: #6441a5;
             color: white;
         }
     </style>
@@ -117,7 +148,7 @@
     </div>
 
     <div id="chat">
-        <input type="text" id="message" name="message" placeholder="Type something...">
+        <input autocomplete="off" type="text" id="message" name="message" placeholder="Type something...">
         <button onclick="sendMessage()" id="send-button"> Send </button>
     </div>
 </body>

@@ -115,7 +115,9 @@ def logout():
 def handle_message(message, streamer):
     global active_chats
     print(message)
-    emit("new_message", session['user'] + ": "+message, broadcast=True)
+
+    data = [session['user'], message]
+    emit("new_message", data, broadcast=True)
     emit("random_message", "Yanchovies: LMAO", broadcast=True)
 
 
@@ -125,7 +127,9 @@ def handle_random_message(streamer):
         random_message = read_random_message()
         random_user = read_random_user()
         print(random_message)
-        emit("random_message", random_user+": "+random_message, broadcast=True)
+
+        data=[random_user, random_message]
+        emit("random_message", data, broadcast=True)
 
 
 @socketio.on('delete_user')
@@ -148,6 +152,6 @@ def user_connected(streamer):
 
 
 if __name__=="__main__":
-    #socketio.run(app, debug=True, host="mytwitch.onrender.com")
+    socketio.run(app, debug=True, host="mytwitch.onrender.com")
     #socketio.run(app, debug=True, host="172.27.176.1")
-    socketio.run(app, debug=True, host="10.123.112.31")
+    #socketio.run(app, debug=True, host="10.123.112.31")

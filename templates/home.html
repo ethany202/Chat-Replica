@@ -15,86 +15,130 @@
     </script>
     
     <style>
+        body{
+            background-color: #121212;
+        }
+
         #navigation-bar{
-            margin: 1vw;
+            margin: 1.5vw;
         }
 
         .nav-button{
             padding: 1vw;
             margin: 0.5vw;
-            font-size: 1vw;
+
+            font-size: 1.35vw;
             font-family: 'Poppins', sans-serif;
-            letter-spacing: 0.1vw;
+            font-weight: bold;
+
+            letter-spacing: 0.2vw;
             transition: all .2s ease-in-out;
-            color: black;
+
+            color: #6441a5;
+            background-color: transparent;
+
             border: none;
             text-decoration: none;
+
+            vertical-align: middle;
         }
 
         .nav-button:hover{
-            color:rgba(168, 21, 21, 0.911);
+            color: white;
+            background-color: #6441a5;
+
             cursor: pointer;
 
-            font-size: 1.25vw;
-            font-weight: bold;
+            transform: scale(1.15);
+
+            border-radius: 0.4vw;
+            border: 0.1vw solid #6441a5;
         }
 
+        #current-user{
+            font-size: 1.25vw;
+            font-family: 'Poppins', sans-serif;
 
+            vertical-align: middle;
+
+            text-align: right;
+
+            background: none;
+            color: white;
+
+            letter-spacing: 0.05vw;
+
+            border: none;
+        }
 
         #find-chat{
             text-align: center;          
         }
 
         input{
-            padding: 0.5vw;
+            padding: 0.75vw;
             margin: 2.5vw 0vw 2.5vw 1vw; 
            
-            font-size: 1vw;
+            font-size: 1.35vw;
             font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            letter-spacing: 0.05vw;
 
-            border-radius: 0.35vw;
-            border: 0.1vw solid black;
+
+            border: 0.05vw;
+            border-bottom: 0.15vw solid;
+            border-color: grey;
+
+            color: white;
+            background-color: #121212;
+        }
+
+        input:focus{
+            outline: none;
         }
 
         #submit-button{
-            padding: 0.5vw;
+            padding: 0.75vw;
 
-            font-size: 1vw;
+            font-size: 1.35vw;
             font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            letter-spacing: 0.05vw;
 
             border-radius: 0.35vw;
-            border: 0.1vw solid black;
+            border: 0.1vw solid #6441a5;
 
-            background-color: black;
+            background-color: #6441a5;
             color: white;
         }
 
         #submit-button:hover{
             cursor: pointer;
         }
-
-        #current-user{
-            text-align: right;
-        }
     </style>
     
 </head>
 <body>
-    <div id="navigation-bar">
-        <header>
-            <nav id="navbar">
-                <a href="login" class = "nav-button">Login</a>
-                <a href="register" class="nav-button">Register</a>
-                <div id="current-user">{{current_user}}</div>
-            </nav>  
-        </header>
-    </div>
-
-    <div id="find-chat">
-        <form id = "input-form" method="POST">
-            <input type="text" id="username" class = "input-field" name="username" placeholder="Streamer">
-            <button id="submit-button">Join</button>
-        </form>
-    </div>
+    <span>
+        <div id="navigation-bar">
+            <header>
+                <nav id="navbar">
+                    <button onclick="redirectToPage('login')" class = "nav-button">Login</button>
+                    <button onclick="redirectToPage('register')" class="nav-button">Register</button>
+                    <button id="current-user">{{current_user}}</button>
+                </nav>  
+            </header>
+        </div>
+    </span>
+    
+    <span>
+        <div id="find-chat">
+            <form id = "input-form" method="POST" autocomplete="off">
+                <input type="text" id="username" class = "input-field" name="username" placeholder="Streamer">
+                <button id="submit-button">Join</button>
+            </form>
+        </div>
+    </span>
+    
 </body>
 </html>
