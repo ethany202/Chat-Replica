@@ -117,8 +117,9 @@ def handle_message(message, streamer):
     print(message)
 
     data = [session['user'], message]
+    fake_msg = ["Yanchovies", "LMAO"]
     emit("new_message", data, broadcast=True)
-    emit("random_message", "Yanchovies: LMAO", broadcast=True)
+    emit("random_message", fake_msg, broadcast=True)
 
 
 @socketio.on('random_message')
@@ -153,5 +154,5 @@ def user_connected(streamer):
 
 if __name__=="__main__":
     socketio.run(app, debug=True, host="mytwitch.onrender.com")
-    #socketio.run(app, debug=True, host="172.27.176.1")
+    #socketio.run(app, debug=True, host="192.168.1.157")
     #socketio.run(app, debug=True, host="10.123.112.31")

@@ -23,6 +23,9 @@
             let userMessage = document.getElementById("message").value
             console.log(userMessage)
 
+            if(userMessage === ""){
+                return
+            }
             //socket.emit("add_user", streamer)
             socket.emit("message", userMessage, streamer)
             document.getElementById("message").value=""
@@ -138,6 +141,10 @@
 
             background-color: #6441a5;
             color: white;
+        }
+
+        #send-button:hover{
+            cursor: pointer;
         }
     </style>
 </head>
